@@ -24,4 +24,11 @@ public class TravelAgency {
     private String companyName;
     private String owner;
     private String password;
+
+    public TravelAgency(String vat, String companyName, String owner, String password) {
+        this.VAT = vat;
+        this.companyName = companyName;
+        this.owner = owner;
+        this.password = password;
+    }
 }
