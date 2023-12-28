@@ -27,4 +27,11 @@ public class Citizen {
     private String password;
 
 
+    public Citizen(String vat, String firstName, String lastName, String email, String password) {
+        this.VAT = vat;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
 }
