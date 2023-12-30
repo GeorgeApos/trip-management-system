@@ -8,5 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface TravelAgencyRepository extends JpaRepository<TravelAgency, Long> {
-    Optional<TravelAgency> findByOwnerAndPassword(String owner, String password);
+
+    Optional<TravelAgency> findByUsernameAndPassword(String owner, String password);
 }

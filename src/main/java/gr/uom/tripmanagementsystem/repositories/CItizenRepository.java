@@ -10,5 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface CItizenRepository extends JpaRepository<Citizen, Long> {
-    Optional<Citizen> findByEmailAndPassword(String email, String password);
+
+    Optional<Citizen> findByUsernameAndPassword(String email, String password);
 }

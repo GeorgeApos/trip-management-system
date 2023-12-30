@@ -1,9 +1,6 @@
 package gr.uom.tripmanagementsystem.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +11,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Citizen {
+@Table(name="citizens")
+public class Citizen extends User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,15 +21,12 @@ public class Citizen {
     private String VAT;
     private String firstName;
     private String lastName;
-    private String email;
-    private String password;
 
 
-    public Citizen(String vat, String firstName, String lastName, String email, String password) {
+    public Citizen(String vat, String firstName, String lastName, String username, String password) {
+        super(username, password, "citizen");
         this.VAT = vat;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
-        this.password = password;
     }
 }
