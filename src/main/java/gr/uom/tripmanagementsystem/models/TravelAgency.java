@@ -1,9 +1,6 @@
 package gr.uom.tripmanagementsystem.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +11,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TravelAgency {
+@Table(name="travel_agencies")
+public class TravelAgency extends User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,13 +20,10 @@ public class TravelAgency {
 
     private String VAT;
     private String companyName;
-    private String owner;
-    private String password;
 
-    public TravelAgency(String vat, String companyName, String owner, String password) {
+    public TravelAgency(String vat, String companyName, String username, String password) {
+        super(username, password, "travelAgency");
         this.VAT = vat;
         this.companyName = companyName;
-        this.owner = owner;
-        this.password = password;
     }
 }
