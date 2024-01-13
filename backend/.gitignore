@@ -1,0 +1,26 @@
+# Compiled class file
+/target/
+
+# Log files
+*.log
+
+# IntelliJ IDEA
+.idea/
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Gradle
+build/
+
+# Compiled Java bytecode
+*.class
+
+# Compiled Kotlin bytecode
+*.kts
+*.kotlin_class
+
+# Maven
+target/ 

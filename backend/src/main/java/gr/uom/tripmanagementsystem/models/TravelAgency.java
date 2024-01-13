@@ -26,4 +26,8 @@ public class TravelAgency extends User {
         this.VAT = vat;
         this.companyName = companyName;
     }
+
+    public void addTrip(AvailableTours availableTours) {
+        availableTours.setTravelAgency(this);
+    }
 }
