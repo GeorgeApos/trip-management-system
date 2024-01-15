@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./SearchTrip.css";
 
 const SearchTrip = () => {
   const [startDate, setStartDate] = useState("");
@@ -47,7 +48,7 @@ const SearchTrip = () => {
       <input type="text" placeholder="Travel Agency Name" value={travelAgencyName} onChange={(e) => setTravelAgencyName(e.target.value)} />
       <input type="text" placeholder="Max Participants" value={maxParticipants} onChange={(e) => setMaxParticipants(e.target.value)} />
 
-      <button onClick={handleSearch} style={{ color: "red" }}>
+      <button onClick={handleSearch} className="search-button">
         Search
       </button>
       <div>

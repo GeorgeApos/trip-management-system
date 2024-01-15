@@ -26,6 +26,7 @@ const TravelAgencyDashboard = () => {
       const response = await axios.post("http://localhost:8080/travelAgency/addTrip", tripData, {
         headers: { Authorization: authHeader },
       });
+
       console.log("Add Trip Response:", response.data);
       // Handle response or update UI accordingly
     } catch (error) {

@@ -1,0 +1,70 @@
+/* SearchTrip.css */
+
+body {
+    font-family: 'Ubuntu', sans-serif;
+    background-color: #c9c3c3; /* Slightly off-white */
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    text-align: center;
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #646cff;
+}
+
+input {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    font-size: 1rem;
+}
+
+button {
+    border: none;
+    border-radius: 4px;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-right: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: #fff;
+}
+
+button:disabled {
+    background-color: #ccc;
+    color: #666;
+}
+
+div {
+    margin-top: 1rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+    color: #646cff;
+}
+
+p {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Adjust button styles inside the search results */
+div button {
+    margin-top: 0.5rem;
+}

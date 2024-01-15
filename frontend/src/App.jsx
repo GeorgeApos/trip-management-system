@@ -8,12 +8,12 @@ import LandingPage from './pages/LandingPage.jsx';
 import CitizenLandingPage from "./pages/CitizenLandingPage.jsx";
 import TravelAgencyLandingPage from "./pages/TravelAgencyLandingPage.jsx";
 import SearchTrip from "./components/SearchTrip.jsx";
+import ViewTrips from "./components/ViewTrips.jsx";
 
 const App = () => {
     return (
         <Router>
             <div>
-                <h1>Trip Management System</h1>
                 <Routes>
                     <Route path="/" element={<LandingPage />} />
                     <Route path="/login" element={<Login />} />
@@ -21,7 +21,7 @@ const App = () => {
                     <Route path="/citizen" element={<CitizenLandingPage />} />
                     <Route path="/travelAgency" element={<TravelAgencyLandingPage />} />
                     <Route path="/citizen/search-for-trip" element={<SearchTrip />} />
-                    <Route path="/citizen/all-trips" element={<h1>All Trips</h1>} />
+                    <Route path="/citizen/all-trips" element={<ViewTrips />} />
                     <Route path="*" element={<h1>Not Found</h1>} />
                 </Routes>
             </div>
