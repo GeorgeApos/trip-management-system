@@ -5,6 +5,18 @@ import {useLocation, useNavigate} from 'react-router-dom';
 const CitizenLandingPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
+
+    if (!location.state) {
+        return (
+            <div>
+                <h1>Error</h1>
+                <p>
+                    You are not logged in. Please log in as a citizen to access this page.
+                </p>
+            </div>
+        );
+    }
+
     const { authHeader } = location.state;
 
     const handleSearchForTrip = () => {
@@ -12,7 +24,7 @@ const CitizenLandingPage = () => {
     };
 
     const handleViewAllTrips = () => {
-        navigate('/citizen/all-trips', { state: { authHeader } });  
+        navigate('/citizen/all-trips', { state: { authHeader } });
     };
 
     return (

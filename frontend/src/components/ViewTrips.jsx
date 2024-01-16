@@ -9,7 +9,6 @@ const ViewTrips = () => {
     const [trips, setTrips] = useState([]);
     const [bookingMessage, setBookingMessage] = useState(""); // New state for booking success/error message
     const location = useLocation();
-    const { authHeader } = location.state;
 
     useEffect(() => {
         const fetchTrips = async () => {
@@ -23,6 +22,19 @@ const ViewTrips = () => {
 
         fetchTrips();
     }, []);
+
+    if (!location.state) {
+        return (
+            <div>
+                <h1>Error</h1>
+                <p>
+                    You are not logged in. Please log in as a citizen to access this page.
+                </p>
+            </div>
+        );
+    }
+
+    const { authHeader } = location.state;
 
     const handleBookNow = (travelAgencyName, tripId) => {
         const bookTrip = async () => {

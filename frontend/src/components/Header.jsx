@@ -8,7 +8,7 @@ const Header = () => {
     return (
         <header className="header">
             <div className="logo">
-                <img src={'/public/travel_logo.png'} alt="Travel Logo" />
+                <img src={'/public/travel_logo.png'} alt="Travel Logo" onClick={() => window.location.href = '/'} />
             </div>
 
             <div className="user-options">

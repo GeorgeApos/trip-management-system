@@ -15,6 +15,18 @@ const SearchTrip = () => {
       const [searchError, setSearchError] = useState(""); // New state for search error message
     const [bookingMessage, setBookingMessage] = useState(""); // New state for booking success/error message
         const location = useLocation();
+
+        if (!location.state) {
+            return (
+                <div>
+                    <h1>Error</h1>
+                    <p>
+                        You are not logged in. Please log in as a citizen to access this page.
+                    </p>
+                </div>
+            );
+        }
+
         const { authHeader } = location.state;
 
 
