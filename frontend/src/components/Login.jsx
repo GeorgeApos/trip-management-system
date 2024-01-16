@@ -1,8 +1,10 @@
 import { useState } from "react";
 import axios from "axios";
 import "./Login.css";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+    const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -17,9 +19,9 @@ const Login = () => {
         const role = response.data.role;
 
         if (role === "citizen") {
-          window.location.href = "/citizen"; // Redirect to citizen dashboard
+            navigate("/citizen", { state: { authHeader } }); // Redirect to citizen dashboard
         } else if (role === "travelAgency") {
-          window.location.href = "/travelAgency"; // Redirect to agency dashboard
+            navigate("/travel-agency", { state: { authHeader } }); // Redirect to travel agency dashboard
         }
       } else {
         console.error("Login failed");

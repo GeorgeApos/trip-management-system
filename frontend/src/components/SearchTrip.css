@@ -19,7 +19,7 @@ body {
 h1 {
     font-size: 3rem;
     margin-bottom: 1rem;
-    color: #646cff;
+    color: #5e766b;
 }
 
 input {
@@ -56,7 +56,7 @@ div {
 
 h3 {
     font-size: 1.5rem;
-    color: #646cff;
+    color: #5e766b;
 }
 
 p {
@@ -67,4 +67,44 @@ p {
 /* Adjust button styles inside the search results */
 div button {
     margin-top: 0.5rem;
+}
+
+.card {
+    background-color: #242424; /* Card background color */
+    color: #5e766b; /* Updated background color */
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added box shadow for depth */
+}
+
+.card h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.card p {
+    margin-bottom: 8px;
+}
+
+.card button {
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: #306c6a; /* Button background color */
+    cursor: pointer;
+    transition: background-color 0.25s, border-color 0.25s;
+}
+
+.card button:hover {
+    background-color: #5e766b; /* Updated button hover color */
+    border-color: #918365; /* Updated button border color on hover */
+}
+
+.card button:focus,
+.card button:focus-visible {
+    outline: 4px auto -webkit-focus-ring-color;
 }

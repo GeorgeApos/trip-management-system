@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class CitizenService {
@@ -54,7 +55,7 @@ public class CitizenService {
             return ResponseEntity.badRequest().body("Citizen not found");
         }
 
-        List<AvailableTours> allTrips = new ArrayList<>();
+        Set<AvailableTours> allTrips = new java.util.HashSet<>();
 
         destination.ifPresent(s -> allTrips.addAll(availableToursRepository.findByDestinationPlace(s)));
         startDate.ifPresent(s -> allTrips.addAll(availableToursRepository.findByStartDate(s)));

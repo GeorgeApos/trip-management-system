@@ -60,7 +60,7 @@ const TravelAgencyDashboard = () => {
             <button onClick={handleAddTrip}>Add Trip</button>
 
             {addTripSuccess && (
-                <p style={{ color: "green" }}>Trip added successfully! You can display additional success information here.</p>
+                <p style={{ color: "green" }}>Trip added successfully!</p>
             )}
         </div>
     );
