@@ -1,0 +1,37 @@
+/* Header.css */
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333; /* Set your desired background color */
+    padding: 10px 20px; /* Adjust padding as needed */
+    color: white; /* Set text color */
+    z-index: 1000; /* Ensure it's above other elements */
+}
+
+.logo img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+
+.user-options {
+    display: flex;
+    margin-right: 100px; /* Adjust the right margin to create space */
+}
+
+.user-options a {
+    color: white; /* Set link text color */
+    margin-left: 15px; /* Adjust spacing between links */
+    text-decoration: none; /* Remove underline */
+}
+
+.user-options a:hover {
+    text-decoration: underline; /* Underline on hover */
+}

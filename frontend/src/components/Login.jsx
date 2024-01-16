@@ -16,9 +16,6 @@ const Login = () => {
       if (response.status === 200) {
         const role = response.data.role;
 
-        localStorage.setItem("email", email);
-        localStorage.setItem("password", password);
-
         if (role === "citizen") {
           window.location.href = "/citizen"; // Redirect to citizen dashboard
         } else if (role === "travelAgency") {

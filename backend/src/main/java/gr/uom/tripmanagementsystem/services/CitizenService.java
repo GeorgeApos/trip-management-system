@@ -47,7 +47,7 @@ public class CitizenService {
     }
 
 
-    public ResponseEntity searchTrip(String username, String password, Optional<String> destination, Optional<String> startDate, Optional<String> endDate, Optional<String> tourSchedule, Optional<String> travelAgencyName, Optional<String> maxParticipants) {
+    public ResponseEntity searchTrip(String username, String password, Optional<String> destination, Optional<String> startDate, Optional<String> endDate, Optional<String> tourSchedule, Optional<String> travelAgencyName, Optional<String> maxParticipants, Optional<String> departurePlace) {
         Optional<Citizen> citizen = citizenRepository.findByUsernameAndPassword(username, password);
 
         if (citizen.isEmpty()) {
@@ -60,6 +60,7 @@ public class CitizenService {
         startDate.ifPresent(s -> allTrips.addAll(availableToursRepository.findByStartDate(s)));
         endDate.ifPresent(s -> allTrips.addAll(availableToursRepository.findByEndDate(s)));
         tourSchedule.ifPresent(s -> allTrips.addAll(availableToursRepository.findByTourSchedule(s)));
+        departurePlace.ifPresent(s -> allTrips.addAll(availableToursRepository.findByDeparturePlace(s)));
 
         if (travelAgencyName.isPresent()) {
             Optional<TravelAgency> travelAgency = travelAgencyRepository.findByCompanyName(travelAgencyName.get());

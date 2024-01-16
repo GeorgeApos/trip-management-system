@@ -1,8 +1,8 @@
 /* login.css */
 body {
     font-family: 'Ubuntu', sans-serif;
-    background-color: #c9c3c3; /* Slightly off-white */
-    color: #333;
+    background-color: #5e766b; /* Updated background color */
+    color: #242424; /* Updated text color */
     margin: 0;
     padding: 0;
     display: flex;
@@ -14,7 +14,7 @@ body {
 .container {
     text-align: center;
     width: 300px; /* Adjust width as needed */
-    background-color: white;
+    background-color: #ffffff; /* Updated container background color */
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -23,7 +23,7 @@ body {
 h2 {
     font-size: 2rem;
     margin-bottom: 1.5rem;
-    color: #646cff;
+    color: #918365; /* Updated heading color */
 }
 
 input {

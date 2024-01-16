@@ -22,4 +22,6 @@ public interface AvailableToursRepository extends JpaRepository<AvailableTours, 
     Collection<? extends AvailableTours> findByTravelAgency(TravelAgency travelAgency);
 
     Collection<? extends AvailableTours> findByMaxParticipants(int maxParticipants);
+
+    Collection<? extends AvailableTours> findByDeparturePlace(String s);
 }

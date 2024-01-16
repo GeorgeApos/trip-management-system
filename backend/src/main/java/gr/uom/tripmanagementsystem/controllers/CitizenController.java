@@ -29,6 +29,7 @@ public class CitizenController {
             @RequestParam(required = false) Optional<String> startDate,
             @RequestParam(required = false) Optional<String> endDate,
             @RequestParam(required = false) Optional<String> departurePlace,
+            @RequestParam(required = false) Optional<String> destinationPlace,
             @RequestParam(required = false) Optional<String> tourSchedule,
             @RequestParam(required = false) Optional<String> travelAgencyName,
             @RequestParam(required = false) Optional<String> maxParticipants
@@ -41,7 +42,7 @@ public class CitizenController {
             return ResponseEntity.badRequest().body("You are not a citizen");
         }
 
-        return citizenService.searchTrip(username, password, departurePlace, startDate, endDate, tourSchedule, travelAgencyName, maxParticipants);
+        return citizenService.searchTrip(username, password, departurePlace, startDate, endDate, tourSchedule, travelAgencyName, maxParticipants, destinationPlace);
 
     }
 

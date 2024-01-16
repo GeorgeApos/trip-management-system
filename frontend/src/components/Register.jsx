@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"; // Import useNavigate from React Router v6
 import "./Register.css";
 
 const Register = () => {
@@ -8,12 +9,19 @@ const Register = () => {
   const [name2, setName2] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userType, setUserType] = useState("citizen"); // Default to citizen
+  const [userType, setUserType] = useState("citizen");
+  const navigate = useNavigate(); // Get the navigate function from React Router v6
 
   const handleRegister = async () => {
     try {
       const authHeader = `Basic ${btoa(`${email}:${password}`)}`;
-      const url = `http://localhost:8080/register?vat=${vat}&name1=${name1}&name2=${userType === "citizen" ? name2 : ""}`;
+      let url;
+
+      if (name2 !== "") {
+        url = `http://localhost:8080/register?vat=${vat}&name1=${name1}&name2=${name2}`;
+      } else {
+        url = `http://localhost:8080/register?vat=${vat}&name1=${name1}`;
+      }
 
       const response = await axios({
         method: 'post',
@@ -27,12 +35,10 @@ const Register = () => {
       });
 
       if (response.status === 200) {
-        localStorage.setItem("email", email);
-        localStorage.setItem("password", password);
         if (userType === "citizen") {
-          window.location.href = "/citizen";
+          navigate("/citizen", { state: { authHeader } }); // Pass data using React Router v6
         } else if (userType === "travelAgency") {
-          window.location.href = "/travelAgency";
+          navigate("/travelAgency", { state: { authHeader } }); // Pass data using React Router v6
         }
       } else {
         console.error("Registration failed");
@@ -42,6 +48,7 @@ const Register = () => {
     }
   };
 
+
   const handleUserTypeChange = (e) => {
     setUserType(e.target.value);
     if (e.target.value === "citizen") {
@@ -50,21 +57,21 @@ const Register = () => {
   };
 
   return (
-    <div>
-      <h2>Register</h2>
-      <select value={userType} onChange={handleUserTypeChange}>
-        <option value="citizen">Citizen</option>
-        <option value="travelAgency">Travel Agency</option>
-      </select>
-      <input type="text" placeholder="VAT" value={vat} onChange={(e) => setVat(e.target.value)} />
-      <input type="text" placeholder="First Name / Company Name" value={name1} onChange={(e) => setName1(e.target.value)} />
-      {userType === "citizen" && ( // Show name2 input only for citizens
-        <input type="text" placeholder="Last Name" value={name2} onChange={(e) => setName2(e.target.value)} />
-      )}
-      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      <button onClick={handleRegister}>Register</button>
-    </div>
+      <div>
+        <h2>Register</h2>
+        <select value={userType} onChange={handleUserTypeChange}>
+          <option value="citizen">Citizen</option>
+          <option value="travelAgency">Travel Agency</option>
+        </select>
+        <input type="text" placeholder="VAT" value={vat} onChange={(e) => setVat(e.target.value)} />
+        <input type="text" placeholder="First Name / Company Name" value={name1} onChange={(e) => setName1(e.target.value)} />
+        {userType === "citizen" && (
+            <input type="text" placeholder="Last Name" value={name2} onChange={(e) => setName2(e.target.value)} />
+        )}
+        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <button onClick={handleRegister}>Register</button>
+      </div>
   );
 };
 
