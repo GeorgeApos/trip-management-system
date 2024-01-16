@@ -14,10 +14,7 @@ const SearchTrip = () => {
     const [searchError, setSearchError] = useState(""); // New state for search error message
 
     const handleSearch = async () => {
-        const storedEmail = localStorage.getItem("email");
-        const storedPassword = localStorage.getItem("password");
-        const authHeader = `Basic ${btoa(`${storedEmail}:${storedPassword}`)}`;
-
+        const authHeader = location.state.authHeader;
         try {
             const response = await axios.post(
                 "http://localhost:8080/citizen/searchTrip",

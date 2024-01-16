@@ -2,13 +2,13 @@
 
 import React from 'react';
 import './Header.css'; // Import your CSS file for styling
-import logo from '../assets/logo.png';
+import logo from '../../public/travel_logo.png'
 
 const Header = () => {
     return (
         <header className="header">
             <div className="logo">
-                <img src={logo} alt="logo" onClick={() => window.location.href = "/"} />
+                <img src={'/public/travel_logo.png'} alt="Travel Logo" />
             </div>
 
             <div className="user-options">
