@@ -14,13 +14,17 @@ const Register = () => {
     try {
       const authHeader = `Basic ${btoa(`${email}:${password}`)}`;
       const url = `http://localhost:8080/register?vat=${vat}&name1=${name1}&name2=${userType === "citizen" ? name2 : ""}`;
-      const response = await axios.post(
+
+      const response = await axios({
+        method: 'post',
         url,
-        {},
-        {
-          headers: { Authorization: authHeader },
-        }
-      );
+        headers: {
+          'Authorization': authHeader,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+      });
 
       if (response.status === 200) {
         localStorage.setItem("email", email);

@@ -3,11 +3,13 @@ package gr.uom.tripmanagementsystem.repositories;
 import gr.uom.tripmanagementsystem.models.AvailableTours;
 import gr.uom.tripmanagementsystem.models.TravelAgency;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 
 @Repository
+@RepositoryRestResource(collectionResourceRel = "availableTours", path = "availableTours")
 public interface AvailableToursRepository extends JpaRepository<AvailableTours, Long> {
     Collection<? extends AvailableTours> findByDestinationPlace(String destinationPlace);
 
