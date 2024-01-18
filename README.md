@@ -7,8 +7,6 @@
 
   <br />
   
-  
-  
   <p align="center">
     <p style="align:center;">
       <img src="https://img.shields.io/github/contributors/GeorgeApos/trip-management-system?style=for-the-badge"/>
@@ -26,6 +24,16 @@
 
 ## About The Project
 This repository hosts the development of an excursion management system, designed to streamline the process of organizing and booking trips. The system allows travel agencies to create excursions, and citizens can reserve seats based on each excursion's capacity.
+
+## Installation
+Clone this repository.
+<br />
+Navigate to the root directory of the application.
+<br />
+Build the project with:
+```docker compose up --build```
+<br />
+Access the application on ```http://localhost:3000```
 
 ## User Roles
 **Citizen** &
