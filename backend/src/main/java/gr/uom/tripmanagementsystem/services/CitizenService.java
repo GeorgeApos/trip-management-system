@@ -12,10 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.sql.Date;
+import java.util.*;
 
 @Service
 public class CitizenService {
@@ -33,54 +31,66 @@ public class CitizenService {
     private ReservationsRepository reservationsRepository;
 
     public ResponseEntity<Citizen> citizenLogin(String username, String password) {
-        Optional<Citizen> citizen = citizenRepository.findByUsernameAndPassword(username, password);
+        String decodedPassword = new String(java.util.Base64.getDecoder().decode(password.getBytes()));
+        Optional<Citizen> citizen = citizenRepository.findByUsernameAndPassword(username, decodedPassword);
 
         return citizen.map(ResponseEntity::ok).orElse(null);
     }
 
-    public ResponseEntity<Citizen> citizenRegister(String vat, String firstName, String lastName, String username, String password) {
+    public ResponseEntity<Citizen> citizenRegister(int vat, String firstName, String lastName, String username, String password) {
         if (citizenRepository.findByUsernameAndPassword(username, password).isPresent()) {
             return ResponseEntity.badRequest().build();
         }
 
-        Citizen citizen = new Citizen(vat, firstName, lastName, username, password);
+        String encodedPassword = new String(java.util.Base64.getEncoder().encode(password.getBytes()));
+
+        Citizen citizen = new Citizen(vat, firstName, lastName, username, encodedPassword);
         return ResponseEntity.ok(citizenRepository.save(citizen));
     }
 
 
-    public ResponseEntity searchTrip(String username, String password, Optional<String> destination, Optional<String> startDate, Optional<String> endDate, Optional<String> tourSchedule, Optional<String> travelAgencyName, Optional<String> maxParticipants, Optional<String> departurePlace) {
+    public ResponseEntity searchTrip(
+            String username,
+            String password,
+            Optional<String> destination,
+            Optional<String> startDate,
+            Optional<String> endDate,
+            Optional<String> tourSchedule,
+            Optional<String> travelAgencyName,
+            Optional<String> maxParticipants,
+            Optional<String> departurePlace) {
+
         Optional<Citizen> citizen = citizenRepository.findByUsernameAndPassword(username, password);
 
         if (citizen.isEmpty()) {
             return ResponseEntity.badRequest().body("Citizen not found");
         }
 
-        Set<AvailableTours> allTrips = new java.util.HashSet<>();
+        Set<AvailableTours> allTrips;
 
-        destination.ifPresent(s -> allTrips.addAll(availableToursRepository.findByDestinationPlace(s)));
-        startDate.ifPresent(s -> allTrips.addAll(availableToursRepository.findByStartDate(s)));
-        endDate.ifPresent(s -> allTrips.addAll(availableToursRepository.findByEndDate(s)));
-        tourSchedule.ifPresent(s -> allTrips.addAll(availableToursRepository.findByTourSchedule(s)));
-        departurePlace.ifPresent(s -> allTrips.addAll(availableToursRepository.findByDeparturePlace(s)));
+        if (destination.isPresent() || startDate.isPresent() || endDate.isPresent() ||
+                tourSchedule.isPresent() || travelAgencyName.isPresent() ||
+                maxParticipants.isPresent() || departurePlace.isPresent()) {
 
-        if (travelAgencyName.isPresent()) {
-            Optional<TravelAgency> travelAgency = travelAgencyRepository.findByCompanyName(travelAgencyName.get());
-            if (travelAgency.isEmpty()) {
-                System.out.println("Travel agency not found");
-            } else {
-                allTrips.addAll(availableToursRepository.findByTravelAgency(travelAgency.get()));
+            allTrips = availableToursRepository.findByDynamicCriteria(
+                    destination.orElse(null),
+                    startDate.map(Date::valueOf).orElse(null),
+                    endDate.map(Date::valueOf).orElse(null),
+                    tourSchedule.orElse(null),
+                    travelAgencyName.orElse(null),
+                    maxParticipants.map(Integer::parseInt).orElse(null),
+                    departurePlace.orElse(null)
+            );
+
+            if (allTrips.isEmpty()) {
+                return ResponseEntity.badRequest().body("No trips found");
             }
-        }
-
-        maxParticipants.ifPresent(s -> allTrips.addAll(availableToursRepository.findByMaxParticipants(Integer.parseInt(s))));
-
-        if (allTrips.isEmpty()) {
-            return ResponseEntity.badRequest().body("No trips found");
+        } else {
+            allTrips = new HashSet<>(availableToursRepository.findAll());
         }
 
         return ResponseEntity.ok(allTrips);
     }
-
     public ResponseEntity bookTrip(String username, String password, String travelAgencyName, String availableToursId) {
         Optional<Citizen> citizen = citizenRepository.findByUsernameAndPassword(username, password);
         Optional<TravelAgency> travelAgency = travelAgencyRepository.findByCompanyName(travelAgencyName);

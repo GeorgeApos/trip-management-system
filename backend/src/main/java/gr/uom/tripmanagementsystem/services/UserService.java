@@ -20,7 +20,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public ResponseEntity userRegister(String vat, String name1, Optional<String> name2, String username, String password) {
+    public ResponseEntity userRegister(int vat, String name1, Optional<String> name2, String username, String password) {
         if (userRepository.findByUsernameAndAndPassword(username, password).isPresent()) {
             return ResponseEntity.badRequest().build();
         }

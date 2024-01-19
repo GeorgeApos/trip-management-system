@@ -25,12 +25,14 @@ public class TravelAgencyService {
         return travelAgency.map(ResponseEntity::ok).orElse(null);
     }
 
-    public ResponseEntity<TravelAgency> travelAgencyRegister(String vat, String companyName, String username, String password) {
+    public ResponseEntity<TravelAgency> travelAgencyRegister(int vat, String companyName, String username, String password) {
         if (travelAgencyRepository.findByUsernameAndPassword(username, password).isPresent()) {
             return ResponseEntity.badRequest().build();
         }
 
-        TravelAgency travelAgency = new TravelAgency(vat, companyName, username, password);
+        String encodedPassword = new String(java.util.Base64.getEncoder().encode(password.getBytes()));
+
+        TravelAgency travelAgency = new TravelAgency(vat, companyName, username, encodedPassword);
         return ResponseEntity.ok(travelAgencyRepository.save(travelAgency));
     }
 
