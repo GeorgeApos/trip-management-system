@@ -26,8 +26,8 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity register(String vat, String name1, Optional<String> name2, @RequestHeader("Authorization") String authHeader) throws Exception {
-        if (vat == null || name1 == null) {
+    public ResponseEntity register(int vat, String name1, Optional<String> name2, @RequestHeader("Authorization") String authHeader) throws Exception {
+        if (vat < 0 || name1 == null || name1.isEmpty() || name2.isEmpty() || authHeader == null || authHeader.isEmpty()) {
             throw new IllegalArgumentException("Invalid input");
         }
 
@@ -45,6 +45,10 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestHeader("Authorization") String authHeader) throws Exception {
+        if (authHeader == null || authHeader.isEmpty()) {
+            throw new IllegalArgumentException("Invalid input");
+        }
+
         String[] credentials = AuthUtils.extractCredentials(authHeader);
         String email = credentials[0];
         String password = credentials[1];

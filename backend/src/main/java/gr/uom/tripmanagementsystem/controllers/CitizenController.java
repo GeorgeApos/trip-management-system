@@ -34,6 +34,10 @@ public class CitizenController {
             @RequestParam(required = false) Optional<String> travelAgencyName,
             @RequestParam(required = false) Optional<String> maxParticipants
     ) {
+        if (authHeader == null || authHeader.isEmpty()) {
+            throw new IllegalArgumentException("Invalid input");
+        }
+
         String[] credentials = AuthUtils.extractCredentials(authHeader);
         String username = credentials[0];
         String password = credentials[1];
@@ -52,6 +56,10 @@ public class CitizenController {
             @RequestParam String travelAgencyName,
             @RequestParam String availableToursId
     ) {
+        if (authHeader == null || authHeader.isEmpty() || travelAgencyName == null || travelAgencyName.isEmpty() || availableToursId == null || availableToursId.isEmpty()) {
+            throw new IllegalArgumentException("Invalid input");
+        }
+
         String[] credentials = AuthUtils.extractCredentials(authHeader);
         String username = credentials[0];
         String password = credentials[1];
