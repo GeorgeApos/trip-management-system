@@ -2,6 +2,7 @@ package gr.uom.tripmanagementsystem.services;
 
 import gr.uom.tripmanagementsystem.models.AvailableTours;
 import gr.uom.tripmanagementsystem.models.TravelAgency;
+import gr.uom.tripmanagementsystem.models.responses.TravelAgencyResponse;
 import gr.uom.tripmanagementsystem.repositories.AvailableToursRepository;
 import gr.uom.tripmanagementsystem.repositories.TravelAgencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,13 @@ public class TravelAgencyService {
     @Autowired
     private AvailableToursRepository availiableToursRepository;
 
-    public ResponseEntity<TravelAgency> travelAgencyLogin(String owner, String password) {
+    public ResponseEntity<TravelAgencyResponse> travelAgencyLogin(String owner, String password) {
         Optional<TravelAgency> travelAgency = travelAgencyRepository.findByUsernameAndPassword(owner, password);
 
-        return travelAgency.map(ResponseEntity::ok).orElse(null);
+        return travelAgency.map(agency -> ResponseEntity.ok().body(new TravelAgencyResponse(agency))).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<TravelAgency> travelAgencyRegister(int vat, String companyName, String username, String password) {
+    public ResponseEntity<TravelAgencyResponse> travelAgencyRegister(int vat, String companyName, String username, String password) {
         if (travelAgencyRepository.findByUsernameAndPassword(username, password).isPresent()) {
             return ResponseEntity.badRequest().build();
         }
@@ -33,7 +34,8 @@ public class TravelAgencyService {
         String encodedPassword = new String(java.util.Base64.getEncoder().encode(password.getBytes()));
 
         TravelAgency travelAgency = new TravelAgency(vat, companyName, username, encodedPassword);
-        return ResponseEntity.ok(travelAgencyRepository.save(travelAgency));
+        travelAgencyRepository.save(travelAgency);
+        return ResponseEntity.ok().body(new TravelAgencyResponse(travelAgency));
     }
 
     public ResponseEntity addTrip(String owner, String password, AvailableTours availableTours) {

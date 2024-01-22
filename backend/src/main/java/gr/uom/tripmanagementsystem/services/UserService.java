@@ -30,12 +30,10 @@ public class UserService {
                 return ResponseEntity.badRequest().body("Username should be an email address");
             }
 
-            citizenService.citizenRegister(vat, name1, name2.get(), username, password);
+            return citizenService.citizenRegister(vat, name1, name2.get(), username, password);
         } else {
-            travelAgencyService.travelAgencyRegister(vat, name1, username, password);
+            return travelAgencyService.travelAgencyRegister(vat, name1, username, password);
         }
-
-        return ResponseEntity.ok().build();
     }
 
     public ResponseEntity userLogin(String email, String password) {

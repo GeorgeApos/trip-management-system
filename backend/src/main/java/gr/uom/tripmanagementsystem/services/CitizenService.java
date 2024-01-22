@@ -4,6 +4,7 @@ import gr.uom.tripmanagementsystem.models.AvailableTours;
 import gr.uom.tripmanagementsystem.models.Citizen;
 import gr.uom.tripmanagementsystem.models.Reservations;
 import gr.uom.tripmanagementsystem.models.TravelAgency;
+import gr.uom.tripmanagementsystem.models.responses.CitizenResponse;
 import gr.uom.tripmanagementsystem.repositories.AvailableToursRepository;
 import gr.uom.tripmanagementsystem.repositories.CItizenRepository;
 import gr.uom.tripmanagementsystem.repositories.ReservationsRepository;
@@ -12,7 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -30,22 +32,23 @@ public class CitizenService {
     @Autowired
     private ReservationsRepository reservationsRepository;
 
-    public ResponseEntity<Citizen> citizenLogin(String username, String password) {
-        String decodedPassword = new String(java.util.Base64.getDecoder().decode(password.getBytes()));
-        Optional<Citizen> citizen = citizenRepository.findByUsernameAndPassword(username, decodedPassword);
+    public ResponseEntity<CitizenResponse> citizenLogin(String username, String password) {
+        Optional<Citizen> citizen = citizenRepository.findByUsernameAndPassword(username, password);
 
-        return citizen.map(ResponseEntity::ok).orElse(null);
+        return citizen.map(value -> ResponseEntity.ok(new CitizenResponse(value))).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<Citizen> citizenRegister(int vat, String firstName, String lastName, String username, String password) {
+    public ResponseEntity<CitizenResponse> citizenRegister(int vat, String firstName, String lastName, String username, String password) {
         if (citizenRepository.findByUsernameAndPassword(username, password).isPresent()) {
             return ResponseEntity.badRequest().build();
         }
 
-        String encodedPassword = new String(java.util.Base64.getEncoder().encode(password.getBytes()));
+        String encodedPassword = new String(Base64.getEncoder().encode(password.getBytes()));
 
         Citizen citizen = new Citizen(vat, firstName, lastName, username, encodedPassword);
-        return ResponseEntity.ok(citizenRepository.save(citizen));
+        citizenRepository.save(citizen);
+
+        return ResponseEntity.ok(new CitizenResponse(citizen));
     }
 
 
@@ -68,14 +71,26 @@ public class CitizenService {
 
         Set<AvailableTours> allTrips;
 
+        Date sqlStartDate = null;
+        Date sqlEndDate = null;
+
         if (destination.isPresent() || startDate.isPresent() || endDate.isPresent() ||
                 tourSchedule.isPresent() || travelAgencyName.isPresent() ||
                 maxParticipants.isPresent() || departurePlace.isPresent()) {
 
+            if (startDate.isPresent() && endDate.isPresent()) {
+                if (startDate.get().compareTo(endDate.get()) > 0) {
+                    return ResponseEntity.badRequest().body("Start date cannot be after end date");
+                }
+            }
+
+            sqlStartDate = transformDate(startDate);
+            sqlEndDate = transformDate(endDate);
+
             allTrips = availableToursRepository.findByDynamicCriteria(
                     destination.orElse(null),
-                    startDate.map(Date::valueOf).orElse(null),
-                    endDate.map(Date::valueOf).orElse(null),
+                    sqlStartDate,
+                    sqlEndDate,
                     tourSchedule.orElse(null),
                     travelAgencyName.orElse(null),
                     maxParticipants.map(Integer::parseInt).orElse(null),
@@ -91,6 +106,35 @@ public class CitizenService {
 
         return ResponseEntity.ok(allTrips);
     }
+
+    private Date transformDate(Optional<String> startDate) {
+        if (startDate.isPresent()) {
+            String inputDate = startDate.get();
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+            try {
+                // Parse inputDate using inputFormat to get a java.util.Date
+                Date utilDate = inputFormat.parse(inputDate);
+
+                // Convert java.util.Date to java.sql.Date using constructor
+                java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+
+                // Format the java.sql.Date to a string
+                String outputDate = outputFormat.format(sqlDate);
+
+                // Parse the formatted date to obtain a java.util.Date
+                return outputFormat.parse(outputDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Return null or handle the case when startDate is not present
+        return null;
+    }
+
+
     public ResponseEntity bookTrip(String username, String password, String travelAgencyName, String availableToursId) {
         Optional<Citizen> citizen = citizenRepository.findByUsernameAndPassword(username, password);
         Optional<TravelAgency> travelAgency = travelAgencyRepository.findByCompanyName(travelAgencyName);

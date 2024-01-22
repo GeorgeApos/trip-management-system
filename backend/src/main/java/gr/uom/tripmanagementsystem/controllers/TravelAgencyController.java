@@ -29,11 +29,13 @@ public class TravelAgencyController {
         String owner = credentials[0];
         String password = credentials[1];
 
-        if(userService.returnRole(owner, password).equals("citizen")){
+        String encodedPassword = new String(Base64.getEncoder().encode(password.getBytes()));
+
+        if(userService.returnRole(owner, encodedPassword).equals("citizen")){
             return ResponseEntity.badRequest().body("You are not a travel agency");
         }
 
-        return travelAgencyService.addTrip(owner, password, availableTours);
+        return travelAgencyService.addTrip(owner, encodedPassword, availableTours);
     }
 
 }

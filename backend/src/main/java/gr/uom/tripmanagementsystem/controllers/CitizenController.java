@@ -42,11 +42,13 @@ public class CitizenController {
         String username = credentials[0];
         String password = credentials[1];
 
-        if (userService.returnRole(username, password).equals("travelAgency")) {
+        String encodedPassword = new String(Base64.getEncoder().encode(password.getBytes()));
+
+        if (userService.returnRole(username, encodedPassword).equals("travelAgency")) {
             return ResponseEntity.badRequest().body("You are not a citizen");
         }
 
-        return citizenService.searchTrip(username, password, departurePlace, startDate, endDate, tourSchedule, travelAgencyName, maxParticipants, destinationPlace);
+        return citizenService.searchTrip(username, encodedPassword, departurePlace, startDate, endDate, tourSchedule, travelAgencyName, maxParticipants, destinationPlace);
 
     }
 
@@ -64,11 +66,13 @@ public class CitizenController {
         String username = credentials[0];
         String password = credentials[1];
 
-        if (userService.returnRole(username, password).equals("travelAgency")) {
+        String encodedPassword = new String(Base64.getEncoder().encode(password.getBytes()));
+
+        if (userService.returnRole(username, encodedPassword).equals("travelAgency")) {
             return ResponseEntity.badRequest().body("You are not a citizen");
         }
 
-        return citizenService.bookTrip(username, password, travelAgencyName, availableToursId);
+        return citizenService.bookTrip(username, encodedPassword, travelAgencyName, availableToursId);
     }
 
 }
